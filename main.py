@@ -23,9 +23,6 @@ def open_files(input_dir: str):
                 files.append(FileData.FileData(f_name, f))
 
 
-# def get_best_k_completions(prefix: str) -> List[AutoCompleteData]:
-#     pass
-
 dictionary = {}
 
 
@@ -61,10 +58,28 @@ def update_dictionary(name_of_line: str, words: list[str], line: str):
             dictionary[new_word] = [line]
 
 
+def get_best_k_completions(prefix: str): # -> List[AutoCompleteData]:
+    words = prefix.split()
+    sentences = []
+    for word in words:
+        if len(word) >= 3:
+            sentences = get_sentences(word[0:3])
+        else:
+            sentences = get_sentences(word)
+    for sentence in sentences:
+        if prefix in sentence:
+            print(sentence)
+
+
+def get_sentences(sub_string):
+    return dictionary[sub_string]
+
+
 if __name__ == "__main__":
     with open("test.txt.txt") as f:
-        read_file("test.txt.txt",f)
-    print(dictionary)
+        read_file("test.txt.txt", f)
+    get_best_k_completions("need")
+    # print(dictionary)
     # open_files("Archive.zip")
     # for file in files:
     #     print(file.get_name())
