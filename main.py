@@ -1,7 +1,9 @@
-from typing import List
+from typing import List, IO, AnyStr
 import AutoCompleteData
 import zipfile
-from FileData import FileData
+import FileData
+
+files = []
 
 
 def open_files(input_dir: str):
@@ -18,12 +20,44 @@ def open_files(input_dir: str):
             with archive.open(file_path) as f:
                 import os
                 f_name, f_ext = os.path.splitext(file_path)
-                FileData.FileData(f_name, f)
+                files.append(FileData.FileData(f_name, f))
 
 
-def get_best_k_completions(prefix: str) -> List[AutoCompleteData]:
-    pass
+# def get_best_k_completions(prefix: str) -> List[AutoCompleteData]:
+#     pass
+
+dictionary = {}
+
+
+def read_file(name_of_file: str, file: IO[AnyStr]):
+    """
+    Read file
+    :param name_of_file:
+    :param file:
+    :return:
+    """
+    while True:
+        line = file.readline()
+        if not line:
+            break
+        update_dictionary(name_of_file, line.split(), line)
+
+
+def update_dictionary(name_of_line: str, words: list[str], line: str):
+    for word in words:
+        new_word = word
+        if len(word) > 3:
+            new_word = word[0:3]
+        if new_word in dictionary:
+            dictionary[new_word].append(line)
+        else:
+            dictionary[new_word] = [line]
 
 
 if __name__ == "__main__":
-    open_files("Archive.zip")
+    with open("test.txt.txt") as f:
+        read_file("test.txt.txt",f)
+    print(dictionary)
+    # open_files("Archive.zip")
+    # for file in files:
+    #     print(file.get_name())
