@@ -8,7 +8,7 @@ files = []
 
 def open_files(input_dir: str):
     """
-    :param input_dir: str
+    :param input_dir: The path to a directory
     :return: none
     This functions receives a zip directory name.
     It opens it using the "zipfile" module, and then open each file in the
@@ -32,9 +32,9 @@ dictionary = {}
 def read_file(name_of_file: str, file: IO[AnyStr]):
     """
     Read file
-    :param name_of_file:
-    :param file:
-    :return:
+    :param name_of_file: name of txt file
+    :param file: open txt file
+    :return: none
     """
     while True:
         line = file.readline()
@@ -44,6 +44,13 @@ def read_file(name_of_file: str, file: IO[AnyStr]):
 
 
 def update_dictionary(name_of_line: str, words: list[str], line: str):
+    """
+
+    :param name_of_line:
+    :param words:
+    :param line:
+    :return:
+    """
     for word in words:
         new_word = word
         if len(word) > 3:
