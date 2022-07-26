@@ -1,9 +1,9 @@
-from typing import List, IO, AnyStr
-import AutoCompleteData
+import ExtractFileData
 import zipfile
-import FileData
+import os
 
 files = []
+word_prefix_dictionary = {}
 
 
 def open_files(input_dir: str):
@@ -18,47 +18,13 @@ def open_files(input_dir: str):
         input_files_paths = archive.namelist()
         for file_path in input_files_paths:
             with archive.open(file_path) as f:
-                import os
                 f_name, f_ext = os.path.splitext(file_path)
-                files.append(FileData.FileData(f_name, f))
+                ExtractFileData.ExtractFileData(f_name, f, word_prefix_dictionary)
+    # with open("test.txt.txt") as f:
+    #     ExtractFileData.ExtractFileData("sds", f, word_prefix_dictionary)
 
 
-dictionary = {}
-
-
-def read_file(name_of_file: str, file: IO[AnyStr]):
-    """
-    Read file
-    :param name_of_file: name of txt file
-    :param file: open txt file
-    :return: none
-    """
-    while True:
-        line = file.readline()
-        if not line:
-            break
-        update_dictionary(name_of_file, line.split(), line)
-
-
-def update_dictionary(name_of_line: str, words: list[str], line: str):
-    """
-
-    :param name_of_line:
-    :param words:
-    :param line:
-    :return:
-    """
-    for word in words:
-        new_word = word
-        if len(word) > 3:
-            new_word = word[0:3]
-        if new_word in dictionary:
-            dictionary[new_word].append(line)
-        else:
-            dictionary[new_word] = [line]
-
-
-def get_best_k_completions(prefix: str): # -> List[AutoCompleteData]:
+def get_best_k_completions(prefix: str):  # -> List[AutoCompleteData]:
     words = prefix.split()
     sentences = []
     for word in words:
@@ -72,14 +38,17 @@ def get_best_k_completions(prefix: str): # -> List[AutoCompleteData]:
 
 
 def get_sentences(sub_string):
-    return dictionary[sub_string]
+    return word_prefix_dictionary[sub_string]
 
 
 if __name__ == "__main__":
-    with open("test.txt.txt") as f:
-        read_file("test.txt.txt", f)
-    get_best_k_completions("need")
+    # with open("test.txt.txt") as f:
+    #     read_file("test.txt.txt", f)
+    # get_best_k_completions("would")
     # print(dictionary)
     # open_files("Archive.zip")
     # for file in files:
     #     print(file.get_name())
+    open_files("Archive.zip")
+
+    print(word_prefix_dictionary)

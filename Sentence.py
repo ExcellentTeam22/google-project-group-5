@@ -9,6 +9,9 @@ class Sentence:
     def __str__(self):
         return self.sentence
 
+    def __repr__(self):
+        return self.sentence
+
     def __eq__(self, other):
         if isinstance(other, Sentence):
             return self.file_name == other.file_name and self.sentence == other.sentence
