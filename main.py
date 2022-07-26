@@ -20,7 +20,7 @@ def open_files(input_dir: str):
             with archive.open(file_path) as f:
                 import os
                 f_name, f_ext = os.path.splitext(file_path)
-                #files.append(FileData.FileData(f_name, f))
+                files.append(FileData.FileData(f_name, f))
 
 
 # def get_best_k_completions(prefix: str) -> List[AutoCompleteData]:
