@@ -1,0 +1,3 @@
+you would need a fast rest service as autocomplete happens on every keystroke.
+For this you would need to store your data in a data store which has retreival's optimized for prefixes 'eg' blu shall return blue.
+My suggestion would be.
