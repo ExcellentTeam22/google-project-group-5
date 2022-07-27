@@ -15,7 +15,6 @@ def get_best_k_completions(user_input: str, dictionary: dict) -> List[Sentence.S
     """
     auto_completed_data = []
     query_prefix = [item.strip().lower()[0:3] for item in user_input.split()]
-    # לבדוק מה קורה כשטעות של מילה
     intersection_of_set = intersection_of_sets(query_prefix, dictionary)
     for sentence in intersection_of_set:
         if user_input in sentence.__str__():
@@ -42,15 +41,14 @@ def check_part_of_query(user_input: str, dictionary: dict) -> List[Sentence.Sent
     results = []
     for word in user_input.split():
         new_list = [item.lower()[0:3] for item in user_input.split() if item not in [word]]
-        # new_list = user_input.split() - [word]
         set_intersection = intersection_of_sets(new_list, dictionary)
         for sentence in set_intersection:
-            if check_validity(user_input, word, sentence, dictionary) > 0:
+            if check_validity(user_input, sentence) > 0:
                 results.append(sentence)
     return results
 
 
-def check_validity(user_input: str, word: str, sentence: str, dictionary: dict) -> int:
+def check_validity(user_input: str, sentence: str) -> int:
     first_word = user_input.split()[0]
     result = [_.start() for _ in re.finditer(first_word, user_input)]
     for place in result:

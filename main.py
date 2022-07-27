@@ -3,9 +3,7 @@ import zipfile
 import os
 import math
 import AutoComplete
-
 import UserInput
-from Sentence import Sentence
 
 files = []
 word_prefix_dictionary = {}
@@ -57,13 +55,6 @@ def count_prefix_appearances() -> set[str]:
 
 
 if __name__ == "__main__":
-    # with open("test.txt.txt") as f:
-    #     read_file("test.txt.txt", f)
-    # get_best_k_completions("would")
-    # print(dictionary)
-    # open_files("Archive.zip")
-    # for file in files:
-    #     print(file.get_name())
     print("[+] Loading files and preparing the system...")
     open_files("Archive.zip")
     print("[+] The system is ready.")
@@ -74,7 +65,7 @@ if __name__ == "__main__":
         print(the_user_input)
         next_input = UserInput.get_user_input()
         while next_input != '#':
-            the_user_input = the_user_input + " " + next_input
+            the_user_input = the_user_input + next_input
             print(AutoComplete.get_best_k_completions(the_user_input, word_prefix_dictionary))
             print(the_user_input)
             next_input = UserInput.get_user_input()

@@ -55,10 +55,8 @@ def update_dictionary(source_text: str, line: str, word_prefix_dictionary: dict)
             continue
         if new_word in word_prefix_dictionary:
             word_prefix_dictionary[new_word].add(sentence)
-            # print(word_prefix_dictionary)
         else:
             word_prefix_dictionary[new_word] = {sentence}
-            # print(word_prefix_dictionary)
 
 
 def delete_punctuation_and_white_space(line: str) -> str:
