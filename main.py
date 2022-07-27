@@ -1,6 +1,9 @@
 import ExtractFileData
 import zipfile
 import os
+import math
+
+from Sentence import Sentence
 
 files = []
 word_prefix_dictionary = {}
@@ -8,11 +11,14 @@ word_prefix_dictionary = {}
 
 def open_files(input_dir: str):
     """
-    :param input_dir: The path to a directory
-    :return: none
     This functions receives a zip directory name.
     It opens it using the "zipfile" module, and then open each file in the
     files tree and sends it to a function which reads the file data.
+
+    :param:
+        input_dir: The path to a directory
+    :return:
+        none
     """
     with zipfile.ZipFile(input_dir, mode="r") as archive:
         input_files_paths = archive.namelist()
@@ -24,22 +30,28 @@ def open_files(input_dir: str):
     #     ExtractFileData.ExtractFileData("sds", f, word_prefix_dictionary)
 
 
-def get_best_k_completions(prefix: str):  # -> List[AutoCompleteData]:
-    words = prefix.split()
-    sentences = []
-    for word in words:
-        if len(word) >= 3:
-            sentences = get_sentences(word[0:3])
-        else:
-            sentences = get_sentences(word)
-    for sentence in sentences:
-        if prefix in sentence:
-            print(sentence)
+def count_prefix_appearances() -> set[str]:
+    """
+    This functions counts each key appearances in the prefix dictionary
+    by checking the size of each of its values(when each value is a set of sentences).
+    If the prefix appear more the log(n) times, then it will be added to a set of most common prefix.
 
+    :return:
+        set of most common prefix.
 
-def get_sentences(sub_string):
-    return word_prefix_dictionary[sub_string]
+    """
 
+    most_common_prefix = {}
+    dictionary_values_counter = 0
+    for value in word_prefix_dictionary.values():
+        dictionary_values_counter+= len(value)
+
+    upper_limit = math.log10(dictionary_values_counter)
+    for key, value in word_prefix_dictionary:
+        if len(value) >= upper_limit:
+            most_common_prefix.add(key)
+
+    return most_common_prefix
 
 if __name__ == "__main__":
     # with open("test.txt.txt") as f:

@@ -4,20 +4,52 @@ import re
 import Sentence
 
 
-def update_dictionary(name_of_line: str, line: str, word_prefix_dictionary :dict):
-    """
+class ExtractFileData:
+    """An ExtractFileData object class is an functional class which devices a text file
+        and splits it into a dictionary which its keys are the prefixes of the words in the text file
+        and the values are sets of a Sentences objects.
 
-    :param word_prefix_dictionary:
-    :param name_of_line:
-    :param line:
+               Args:
+              file_name (str): The name of the source file of the sentence.
+              file (IO[AnyStr]): A text file
+              word_prefix_dictionary (dict) : dictionary which its keys are the prefixes of the words in the text file
+                                              and the values are sets of a Sentences objects.
+               Attributes:
+                    file_name (str): The name of the source file of the sentence.
+                    file (IO[AnyStr]): A text file
+           """
+
+
+    def __init__(self, file_name: str, file: IO[AnyStr], word_prefix_dictionary: dict):
+        self.file_name = file_name.split("/")[-1]
+        self.file = file
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            update_dictionary(self.file_name, line, word_prefix_dictionary)
+
+
+def update_dictionary(name_of_file: str, line: str, word_prefix_dictionary :dict):
+    """
+    Checking if prefix of each word in a given sentence is already a key in the dictionary,
+    if it does - Creating a Sentence object and adding it to the value.
+    If it doesn't - adding it as a new key and the Sentence object to the value.
+    :param
+        word_prefix_dictionary(dict): dictionary which its keys are the prefixes of the words in the text file
+                                and the values are sets of a Sentences objects.
+    :param
+        name_of_file(str): The name of the source file of the completed sentence
+    :param
+        line(str): Complete sentence
     :return:
+        none
     """
     line = delete_punctuation_and_white_space(line)
     line = line.lower()
     line_words = line.split()
-    sentence = Sentence.Sentence(name_of_line, line)
+    sentence = Sentence.Sentence(name_of_file, line)
     for word in line_words:
-        new_word = word
         if len(word) >= 3:
             new_word = word[0:3]
         else:
@@ -31,17 +63,16 @@ def update_dictionary(name_of_line: str, line: str, word_prefix_dictionary :dict
 
 
 def delete_punctuation_and_white_space(line: str) -> str:
+    """
+    Removes all white spaces and punctuation marks from a given string.
+
+    :param
+        line: Text string
+    :return:
+        Text string without spaces and punctuation marks.
+    """
     new_string = str(line).translate(str.maketrans('', '', string.punctuation))
     new_string = re.sub(' +', ' ', new_string)
     return new_string.strip()
 
 
-class ExtractFileData:
-    def __init__(self, file_name: str, file: IO[AnyStr], word_prefix_dictionary: dict):
-        self.file_name = file_name.split("/")[-1]
-        self.file = file
-        while True:
-            line = file.readline()
-            if not line:
-                break
-            update_dictionary(self.file_name, line, word_prefix_dictionary)

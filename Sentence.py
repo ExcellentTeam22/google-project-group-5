@@ -1,4 +1,16 @@
 class Sentence:
+    """
+    A sentence object class which represents a single line of text for a text file
+
+        Args:
+            sentence (str): The complete sentence.
+            file_name (str): The name of the source file of the sentence
+
+        Attributes:
+            sentence (str): The complete sentence.
+            file_name (str): The name of the source file of the sentence
+    """
+
     def __init__(self, file_name, sentence):
         self.file_name = file_name
         self.sentence = sentence

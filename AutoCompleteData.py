@@ -5,7 +5,8 @@ class AutoCompleteData:
     """An autocomplete object class which represents a single line of output
 
         Args:
-
+        completed_sentence (str): The completed sentence.
+        source_text (str): The name of the source file of the completed sentence
 
         Attributes:
             completed_sentence (str): The completed sentence.
@@ -23,4 +24,25 @@ class AutoCompleteData:
     source_text: str
     offset: int
     score: int
-    # methods that you need to define by yourself
+
+    # def __init__(self, source_text, completed_sentence):
+    #     self.source_text = source_text
+    #     self.completed_sentence = completed_sentence
+    #
+    # def get_source_text_name(self):
+    #     return self.source_text
+    #
+    # def __str__(self):
+    #     return self.completed_sentence
+    #
+    # def __repr__(self):
+    #     return self.completed_sentence
+    #
+    # def __eq__(self, other):
+    #     if isinstance(other, AutoCompleteData):
+    #         return self.source_text == other.source_text and self.completed_sentence == other.completed_sentence
+    #     else:
+    #         return False
+    #
+    # def __hash__(self):
+    #     return hash(self.completed_sentence)
