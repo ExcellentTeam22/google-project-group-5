@@ -56,3 +56,45 @@ def levenshtein_distance(s, t):
     else:
         # This is the minimum number of edits needed to convert string a to string b
         return distance[row][col]
+
+
+def get_score(a, b):
+    pos = dif(a, b)
+    if a == b:
+        return len(a) * 2
+    elif len(a) == len(b):
+        return len(a) * 2 - get_replace_score(pos)
+    elif len(a) > len(b):
+        return len(b) * 2 - get_deletion_addition_score(pos)
+    elif len(a) < len(b):
+        return len(a) * 2 - get_deletion_addition_score(pos)
+
+
+def get_replace_score(position):
+    if position[0] == 0:
+        return 5
+    elif position[0] == 1:
+        return 4
+    elif position[0] == 2:
+        return 3
+    elif position[0] == 3:
+        return 2
+    else:
+        return 1
+
+
+def get_deletion_addition_score(position):
+    if position[0] == 0:
+        return 10
+    elif position[0] == 1:
+        return 8
+    elif position[0] == 2:
+        return 6
+    elif position[0] == 3:
+        return 4
+    else:
+        return 2
+
+
+def dif(a, b):
+    return [i for i in range(len(a)) if a[i] != b[i]]
