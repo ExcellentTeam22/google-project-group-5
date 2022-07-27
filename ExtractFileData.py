@@ -19,7 +19,6 @@ class ExtractFileData:
                     file (IO[AnyStr]): A text file
            """
 
-
     def __init__(self, source_text: str, file: IO[AnyStr], word_prefix_dictionary: dict):
         self.source_text = source_text.split("/")[-1]
         self.file = file
@@ -30,7 +29,7 @@ class ExtractFileData:
             update_dictionary(self.source_text, line, word_prefix_dictionary)
 
 
-def update_dictionary(source_text: str, line: str, word_prefix_dictionary :dict):
+def update_dictionary(source_text: str, line: str, word_prefix_dictionary: dict):
     """
     Checking if prefix of each word in a given sentence is already a key in the dictionary,
     if it does - Creating a Sentence object and adding it to the value.
@@ -56,10 +55,8 @@ def update_dictionary(source_text: str, line: str, word_prefix_dictionary :dict)
             continue
         if new_word in word_prefix_dictionary:
             word_prefix_dictionary[new_word].add(sentence)
-            # print(word_prefix_dictionary)
         else:
             word_prefix_dictionary[new_word] = {sentence}
-            # print(word_prefix_dictionary)
 
 
 def delete_punctuation_and_white_space(line: str) -> str:
@@ -74,5 +71,3 @@ def delete_punctuation_and_white_space(line: str) -> str:
     new_string = str(line).translate(str.maketrans('', '', string.punctuation))
     new_string = re.sub(' +', ' ', new_string)
     return new_string.strip()
-
-
