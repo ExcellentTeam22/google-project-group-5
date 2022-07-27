@@ -64,18 +64,18 @@ if __name__ == "__main__":
     # open_files("Archive.zip")
     # for file in files:
     #     print(file.get_name())
-    print("Loading the files and preparing the system...")
+    print("[+] Loading files and preparing the system...")
     open_files("Archive.zip")
-    print("The system is ready.")
+    print("[+] The system is ready.")
 
     while True:
         the_user_input = UserInput.get_user_input()
-        print(auto_complete.get_best_k_completions(the_user_input, word_prefix_dictionary))
+        print(AutoComplete.get_best_k_completions(the_user_input, word_prefix_dictionary))
         print(the_user_input)
         next_input = UserInput.get_user_input()
         while next_input != '#':
             the_user_input = the_user_input + " " + next_input
-            print(auto_complete.get_best_k_completions(the_user_input, word_prefix_dictionary))
+            print(AutoComplete.get_best_k_completions(the_user_input, word_prefix_dictionary))
             print(the_user_input)
             next_input = UserInput.get_user_input()
         the_user_input = ""
