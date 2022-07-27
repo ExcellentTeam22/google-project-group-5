@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 import jellyfish
@@ -8,8 +9,7 @@ import numpy as np
 
 def get_best_k_completions(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
     """
-
-    :param prefix:
+    :param user_input:
     :param dictionary:
     :return:
     """
@@ -41,7 +41,7 @@ def intersection_of_sets(prefix_of_query: list[str], dictionary: dict) -> set[st
 def check_part_of_query(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
     results = []
     for word in user_input.split():
-        new_list = [item for item in user_input.split() if item not in [word]]
+        new_list = [item.lower()[0:3] for item in user_input.split() if item not in [word]]
         # new_list = user_input.split() - [word]
         set_intersection = intersection_of_sets(new_list, dictionary)
         for sentence in set_intersection:
