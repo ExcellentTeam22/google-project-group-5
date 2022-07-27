@@ -10,27 +10,27 @@ class ExtractFileData:
         and the values are sets of a Sentences objects.
 
                Args:
-              file_name (str): The name of the source file of the sentence.
+              source_text (str): The name of the source file of the sentence.
               file (IO[AnyStr]): A text file
               word_prefix_dictionary (dict) : dictionary which its keys are the prefixes of the words in the text file
                                               and the values are sets of a Sentences objects.
                Attributes:
-                    file_name (str): The name of the source file of the sentence.
+                    source_text (str): The name of the source file of the sentence.
                     file (IO[AnyStr]): A text file
            """
 
 
-    def __init__(self, file_name: str, file: IO[AnyStr], word_prefix_dictionary: dict):
-        self.file_name = file_name.split("/")[-1]
+    def __init__(self, source_text: str, file: IO[AnyStr], word_prefix_dictionary: dict):
+        self.source_text = source_text.split("/")[-1]
         self.file = file
         while True:
             line = file.readline()
             if not line:
                 break
-            update_dictionary(self.file_name, line, word_prefix_dictionary)
+            update_dictionary(self.source_text, line, word_prefix_dictionary)
 
 
-def update_dictionary(name_of_file: str, line: str, word_prefix_dictionary :dict):
+def update_dictionary(source_text: str, line: str, word_prefix_dictionary :dict):
     """
     Checking if prefix of each word in a given sentence is already a key in the dictionary,
     if it does - Creating a Sentence object and adding it to the value.
@@ -39,7 +39,7 @@ def update_dictionary(name_of_file: str, line: str, word_prefix_dictionary :dict
         word_prefix_dictionary(dict): dictionary which its keys are the prefixes of the words in the text file
                                 and the values are sets of a Sentences objects.
     :param
-        name_of_file(str): The name of the source file of the completed sentence
+        source_text(str): The name of the source file of the completed sentence
     :param
         line(str): Complete sentence
     :return:
@@ -48,7 +48,7 @@ def update_dictionary(name_of_file: str, line: str, word_prefix_dictionary :dict
     line = delete_punctuation_and_white_space(line)
     line = line.lower()
     line_words = line.split()
-    sentence = Sentence.Sentence(name_of_file, line)
+    sentence = Sentence.Sentence(source_text, line)
     for word in line_words:
         if len(word) >= 3:
             new_word = word[0:3]

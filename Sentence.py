@@ -4,19 +4,24 @@ class Sentence:
 
         Args:
             sentence (str): The complete sentence.
-            file_name (str): The name of the source file of the sentence
+            source_text (str): The name of the source file of the sentence
 
         Attributes:
             sentence (str): The complete sentence.
-            file_name (str): The name of the source file of the sentence
+            source_text (str): The name of the source file of the sentence
     """
+    completed_sentence: str
+    source_text: str
+    offset: int
+    score: int
 
-    def __init__(self, file_name, sentence):
-        self.file_name = file_name
+    def __init__(self, source_text, sentence):
+        self.source_text = source_text
         self.sentence = sentence
 
+
     def get_file_name(self):
-        return self.file_name
+        return self.source_text
 
     def __str__(self):
         return self.sentence
@@ -26,7 +31,7 @@ class Sentence:
 
     def __eq__(self, other):
         if isinstance(other, Sentence):
-            return self.file_name == other.file_name and self.sentence == other.sentence
+            return self.source_text == other.source_text and self.sentence == other.sentence
         else:
             return False
 
