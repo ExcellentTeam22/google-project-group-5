@@ -2,6 +2,7 @@ import ExtractFileData
 import zipfile
 import os
 import math
+import AutoComplete
 
 import UserInput
 from Sentence import Sentence
@@ -66,14 +67,15 @@ if __name__ == "__main__":
     print("Loading the files and preparing the system...")
     open_files("Archive.zip")
     print("The system is ready.")
+
     while True:
         the_user_input = UserInput.get_user_input()
-        # here is the code of the search
+        print(auto_complete.get_best_k_completions(the_user_input, word_prefix_dictionary))
         print(the_user_input)
         next_input = UserInput.get_user_input()
         while next_input != '#':
             the_user_input = the_user_input + " " + next_input
-            # here is the code of the search
+            print(auto_complete.get_best_k_completions(the_user_input, word_prefix_dictionary))
             print(the_user_input)
             next_input = UserInput.get_user_input()
         the_user_input = ""
