@@ -22,7 +22,7 @@ We used hash map as the main database.
 In the future we aspire to accomplish better running time for offline mode.
 
 For online mode we focused in efficiency in terms of time complexity.
-We tried to reach a maximum time complexity of log(n).
+We tried to reach time complexity of log(n).
 In the future we aspire to reach time complexity of O(1).
 Also, we need to improve the accuracy of the output, we have unhandled edge cases.
 
