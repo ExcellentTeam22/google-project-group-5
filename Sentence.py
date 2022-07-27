@@ -19,6 +19,11 @@ class Sentence:
         self.source_text = source_text
         self.sentence = sentence
 
+    def set_score(self, score):
+        self.score = score
+
+    def set_offset(self, offset):
+        self.offset = offset
 
     def get_file_name(self):
         return self.source_text
