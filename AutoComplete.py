@@ -1,30 +1,75 @@
 from typing import List
 
+import jellyfish
+
 import Sentence
 import numpy as np
 
 
-def get_best_k_completions(prefix: str, dictionary: dict) -> List[Sentence.Sentence]:
+def get_best_k_completions(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
     """
-    Get 5 top suggestions of completed sentences from the query that was provided.
-    :param prefix: The search query.
-    :param dictionary: The prefix dictionary.
-    :return: List of the top 5 suggestions of sentences.
+
+    :param prefix:
+    :param dictionary:
+    :return:
     """
-    auto_completed_data = [Sentence.Sentence]
-    query_prefix = [item.strip().lower()[0:3] for item in prefix.split()]
-    set_of_prefix = [dictionary[key] for key in query_prefix if key in dictionary]
-    intersection_of_sets: set[Sentence.Sentence] = set.intersection(*set_of_prefix)
-    for sentence in intersection_of_sets:
-        if prefix in sentence.__str__():
-            offset = sentence.__str__().find(prefix)
-            score = len(prefix) * 2
+    auto_completed_data = []
+    query_prefix = [item.strip().lower()[0:3] for item in user_input.split()]
+    # לבדוק מה קורה כשטעות של מילה
+    intersection_of_set = intersection_of_sets(query_prefix, dictionary)
+    for sentence in intersection_of_set:
+        if user_input in sentence.__str__():
+            offset = sentence.__str__().find(user_input)
+            score = len(user_input) * 2
             sentence.set_score(score)
             sentence.set_offset(offset)
-            if len(auto_completed_data) == 5:
-                break
             auto_completed_data.append(sentence)
+        if len(auto_completed_data) > 5:
+            return auto_completed_data
+    auto_completed_data.append(check_part_of_query(user_input, dictionary))
     return auto_completed_data
+
+
+def intersection_of_sets(prefix_of_query: list[str], dictionary: dict) -> set[str]:
+    set_of_prefix = [dictionary[key] for key in prefix_of_query if key in dictionary]
+    if not set_of_prefix:
+        return []
+    sets_intersection = set.intersection(*set_of_prefix)
+    return sets_intersection
+
+
+def check_part_of_query(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
+    results = []
+    for word in user_input.split():
+        new_list = [item for item in user_input.split() if item not in [word]]
+        # new_list = user_input.split() - [word]
+        set_intersection = intersection_of_sets(new_list, dictionary)
+        for sentence in set_intersection:
+            if check_validity(user_input, word, sentence, dictionary) > 0:
+                results.append(sentence)
+    return results
+
+
+def check_validity(user_input: str, word: str, sentence: str, dictionary: dict) -> int:
+    first_word = user_input.split()[0]
+    result = [_.start() for _ in re.finditer(first_word, user_input)]
+    for place in result:
+        sentence_substring = sentence.__str__()[place: place+len(user_input)]
+        if jellyfish.damerau_levenshtein_distance(user_input, sentence_substring) <= 1:
+            return calculate_points(user_input, sentence.__str__()[place: place+len(user_input)])
+    return -1
+
+
+def calculate_points(user_input, partial_sentence):
+    return 15
+
+
+def divide_user_input_to_3(user_input: str, word: str) -> tuple[str, str, str]:
+    user_input_offset = user_input.find(word)
+    sentence_begin = user_input[0, user_input_offset]
+    sentence_middle = user_input[user_input_offset, user_input_offset + len(word)]
+    sentence_end = user_input[user_input_offset + len(word), len(user_input)]
+    return sentence_begin, sentence_middle, sentence_end
 
 
 def levenshtein_distance(s, t):
