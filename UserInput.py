@@ -1,4 +1,5 @@
 import sys
+import ExtractFileData
 
 
 def get_user_input():
@@ -6,8 +7,13 @@ def get_user_input():
     Get input from the user.
     :return: List of the query divide into words.
     """
-    query_words = [item.strip().lower() for item in input("Enter search query: ").split()]
-    return query_words
+    user_input = input("Enter search query")
+    if user_input == '#':
+        return user_input
+    user_input = ExtractFileData.delete_punctuation_and_white_space(user_input)
+    return user_input
+    # query_words = [item.strip().lower() for item in input("Enter search query: ").split()]
+    # return query_words
 
 
 def find_least_frequent_word(words):

@@ -3,6 +3,7 @@ import zipfile
 import os
 import math
 
+import UserInput
 from Sentence import Sentence
 
 files = []
@@ -41,10 +42,10 @@ def count_prefix_appearances() -> set[str]:
 
     """
 
-    most_common_prefix = {}
+    most_common_prefix = set()
     dictionary_values_counter = 0
     for value in word_prefix_dictionary.values():
-        dictionary_values_counter+= len(value)
+        dictionary_values_counter += len(value)
 
     upper_limit = math.log10(dictionary_values_counter)
     for key, value in word_prefix_dictionary:
@@ -52,6 +53,7 @@ def count_prefix_appearances() -> set[str]:
             most_common_prefix.add(key)
 
     return most_common_prefix
+
 
 if __name__ == "__main__":
     # with open("test.txt.txt") as f:
@@ -61,6 +63,17 @@ if __name__ == "__main__":
     # open_files("Archive.zip")
     # for file in files:
     #     print(file.get_name())
+    print("Loading the files and preparing the system...")
     open_files("Archive.zip")
-
-    print(word_prefix_dictionary)
+    print("The system is ready.")
+    while True:
+        the_user_input = UserInput.get_user_input()
+        # here is the code of the search
+        print(the_user_input)
+        next_input = UserInput.get_user_input()
+        while next_input != '#':
+            the_user_input = the_user_input + " " + next_input
+            # here is the code of the search
+            print(the_user_input)
+            next_input = UserInput.get_user_input()
+        the_user_input = ""
