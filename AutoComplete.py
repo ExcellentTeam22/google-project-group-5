@@ -9,9 +9,14 @@ import numpy as np
 
 def get_best_k_completions(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
     """
+    Run on the dictionary and find the top 5 results.
+
     :param user_input:
+        The user sentence to search.
     :param dictionary:
+        The dictionary of word prefix and sentences the prefix in.
     :return:
+        Top 5 results.
     """
     auto_completed_data = []
     query_prefix = [item.strip().lower()[0:3] for item in user_input.split()]
@@ -30,6 +35,16 @@ def get_best_k_completions(user_input: str, dictionary: dict) -> List[Sentence.S
 
 
 def intersection_of_sets(prefix_of_query: list[str], dictionary: dict) -> set[str]:
+    """
+    Function to find the sets of the words and return the intersection between them.
+
+    :param prefix_of_query:
+        Prefix to find in the dictionary.
+    :param dictionary:
+        The dictionary to find in.
+    :return:
+        The intersection of the prefix sets.
+    """
     set_of_prefix = [dictionary[key] for key in prefix_of_query if key in dictionary]
     if not set_of_prefix:
         return []
@@ -38,6 +53,16 @@ def intersection_of_sets(prefix_of_query: list[str], dictionary: dict) -> set[st
 
 
 def check_part_of_query(user_input: str, dictionary: dict) -> List[Sentence.Sentence]:
+    """
+    Function to get find the results base on part of the words in sentence.
+
+    :param user_input:
+        The sentence the user search.
+    :param dictionary:
+        The dictionary to search in.
+    :return:
+        List of the sentences with one mistake.
+    """
     results = []
     for word in user_input.split():
         new_list = [item.lower()[0:3] for item in user_input.split() if item not in [word]]
@@ -49,6 +74,16 @@ def check_part_of_query(user_input: str, dictionary: dict) -> List[Sentence.Sent
 
 
 def check_validity(user_input: str, sentence: str) -> int:
+    """
+    Function to check the score of the user input compare to the sentence.
+
+    :param user_input:
+        The user sentence.
+    :param sentence:
+        The sentence from the dictionary to check.
+    :return: -1 if
+    the user input is not substring with 1 change, the sentence score if the user input is substring with 1 change.
+    """
     first_word = user_input.split()[0]
     result = [_.start() for _ in re.finditer(first_word, user_input)]
     for place in result:
@@ -60,45 +95,6 @@ def check_validity(user_input: str, sentence: str) -> int:
 
 def calculate_points(user_input, partial_sentence):
     return 15
-
-
-def divide_user_input_to_3(user_input: str, word: str) -> tuple[str, str, str]:
-    user_input_offset = user_input.find(word)
-    sentence_begin = user_input[0, user_input_offset]
-    sentence_middle = user_input[user_input_offset, user_input_offset + len(word)]
-    sentence_end = user_input[user_input_offset + len(word), len(user_input)]
-    return sentence_begin, sentence_middle, sentence_end
-
-
-def levenshtein_distance(s, t):
-    """ levenshtein_distance:
-        Calculates levenshtein distance between two strings.
-    """
-    # Initialize matrix of zeros
-    rows = len(s) + 1
-    cols = len(t) + 1
-    distance = np.zeros((rows, cols), dtype=int)
-
-    # Populate matrix of zeros with the indeces of each character of both strings
-    for i in range(1, rows):
-        for k in range(1, cols):
-            distance[i][0] = i
-            distance[0][k] = k
-
-    # Iterate over the matrix to compute the cost of deletions,insertions and/or substitutions
-    for col in range(1, cols):
-        for row in range(1, rows):
-            if s[row - 1] == t[col - 1]:
-                cost = 0  # If the characters are the same in the two strings in a given position [i,j] then the cost is 0
-            else:
-                cost = 1
-            distance[row][col] = min(distance[row - 1][col] + 1,  # Cost of deletions
-                                     distance[row][col - 1] + 1,  # Cost of insertions
-                                     distance[row - 1][col - 1] + cost)  # Cost of substitutions
-
-    else:
-        # This is the minimum number of edits needed to convert string a to string b
-        return distance[row][col]
 
 
 def get_score(a, b):
